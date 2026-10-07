@@ -1,0 +1,19 @@
+{
+  "name": "astra_sirius_project_files",
+  "version": "1.0.0",
+  "description": "New project assembled from the working ASTRA Browser Agent and the SIRIUS distributed Android core.",
+  "main": "browser_agent_v4_LLM_WORKING_2026-10-06.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "chrome-remote-interface": "^0.34.0"
+  }
+}

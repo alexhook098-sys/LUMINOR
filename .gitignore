@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+*.log
+node_modules/
+__pycache__/
+*.pyc
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+.DS_Store

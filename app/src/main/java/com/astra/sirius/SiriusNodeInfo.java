@@ -1,0 +1,7 @@
+package com.astra.sirius;
+public class SiriusNodeInfo {
+    private final String name,host; private final int port; private boolean online; private long latencyMs,totalRamMb,availableRamMb; private int cpuCores; private String cpuArchitecture;
+    public SiriusNodeInfo(String name,String host,int port){this.name=name;this.host=host;this.port=port;online=false;latencyMs=-1;totalRamMb=-1;availableRamMb=-1;cpuCores=-1;cpuArchitecture="UNKNOWN";}
+    public String getName(){return name;} public String getHost(){return host;} public int getPort(){return port;} public boolean isOnline(){return online;} public void setOnline(boolean v){online=v;} public long getLatencyMs(){return latencyMs;} public void setLatencyMs(long v){latencyMs=v;} public long getTotalRamMb(){return totalRamMb;} public void setTotalRamMb(long v){totalRamMb=v;} public long getAvailableRamMb(){return availableRamMb;} public void setAvailableRamMb(long v){availableRamMb=v;} public int getCpuCores(){return cpuCores;} public void setCpuCores(int v){cpuCores=v;} public String getCpuArchitecture(){return cpuArchitecture;} public void setCpuArchitecture(String v){cpuArchitecture=v;} public String getAddress(){return host+":"+port;}
+    public String getHealthStatus(){if(!online)return "OFFLINE";if(latencyMs<0)return "UNKNOWN";if(latencyMs<=10)return "EXCELLENT";if(latencyMs<=50)return "GOOD";if(latencyMs<=200)return "FAIR";if(latencyMs<=500)return "SLOW";return "VERY SLOW";}
+}
