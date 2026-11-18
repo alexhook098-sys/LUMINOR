@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "project": "ASTRA VIDEO STUDIO",
+  "policy": {
+    "commercial_use_required": true,
+    "redistribution_required": true,
+    "no_paid_runtime_api": true,
+    "block_release_if_unverified": true,
+    "models_and_weights_require_separate_review": true
+  },
+  "modules": [
+    {
+      "id": "androidx-compose",
+      "name": "AndroidX / Jetpack Compose",
+      "license": "Apache-2.0",
+      "version": "see app/build.gradle.kts",
+      "status": "review_required",
+      "integrated": true,
+      "release_blocked_until_verified": true
+    },
+    {
+      "id": "ffmpeg",
+      "name": "FFmpeg",
+      "license": "LGPL/GPL depends on exact build configuration",
+      "version": "not_selected",
+      "status": "candidate_not_integrated",
+      "integrated": false,
+      "release_blocked_until_verified": true
+    },
+    {
+      "id": "rife-ncnn-vulkan",
+      "name": "RIFE ncnn Vulkan implementation",
+      "license": "MIT for implementation; audit dependencies separately",
+      "version": "not_selected",
+      "status": "candidate_not_integrated",
+      "integrated": false,
+      "release_blocked_until_verified": true
+    },
+    {
+      "id": "ncnn",
+      "name": "Tencent ncnn",
+      "license": "BSD-3-Clause for ncnn; audit bundled dependencies",
+      "version": "not_selected",
+      "status": "candidate_not_integrated",
+      "integrated": false,
+      "release_blocked_until_verified": true
+    },
+    {
+      "id": "rife-model-weights",
+      "name": "RIFE model weights",
+      "license": "unverified",
+      "version": "not_selected",
+      "status": "blocked_pending_model_review",
+      "integrated": false,
+      "release_blocked_until_verified": true
+    },
+    {
+      "id": "optical-flow",
+      "name": "Optical Flow implementation",
+      "license": "not_selected",
+      "version": "not_selected",
+      "status": "candidate_not_evaluated",
+      "integrated": false,
+      "release_blocked_until_verified": true
+    }
+  ]
+}
