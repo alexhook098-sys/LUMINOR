@@ -82,7 +82,7 @@ private fun StudioScreen() {
             }
             images = (images + picked).distinct()
             selectedFrame = 0
-            notice = "Добавлено кадров: \${picked.size}. Всего: \${images.size}."
+            notice = "Добавлено кадров: ${picked.size}. Всего: ${images.size}."
         }
     }
 
@@ -157,7 +157,7 @@ private fun ImportScreen(
                     Text("VIDEO STUDIO", color = Color.White, fontSize = 25.sp, fontWeight = FontWeight.ExtraBold)
                     Text("Создай свой видеоряд", color = Muted, fontSize = 13.sp)
                 }
-                Text("\${images.size} кадров", color = Violet, fontWeight = FontWeight.Bold)
+                Text("${images.size} кадров", color = Violet, fontWeight = FontWeight.Bold)
             }
 
             Card(colors = CardDefaults.cardColors(containerColor = Panel), shape = RoundedCornerShape(23.dp)) {
@@ -186,7 +186,7 @@ private fun ImportScreen(
                                     Surface(
                                         modifier = Modifier.align(Alignment.TopStart).padding(4.dp),
                                         color = Ink.copy(alpha = 0.8f), shape = CircleShape
-                                    ) { Text("\${index + 1}", modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp), color = Color.White, fontSize = 10.sp) }
+                                    ) { Text("${index + 1}", modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp), color = Color.White, fontSize = 10.sp) }
                                 }
                             }
                         }
@@ -231,7 +231,7 @@ private fun ImportScreen(
 
             if (images.isNotEmpty()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("КАДРЫ: \${images.size}", color = Muted, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                    Text("КАДРЫ: ${images.size}", color = Muted, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                     TextButton(onClick = onClear) { Text("Очистить") }
                 }
                 Button(
@@ -266,7 +266,7 @@ private fun EditorScreen(
                 IconButton(onClick = onBack) { Icon(Icons.Rounded.ArrowBack, null, tint = Color.White) }
                 Column(Modifier.weight(1f)) {
                     Text("МОНТАЖ", color = Color.White, fontWeight = FontWeight.Bold)
-                    Text("\${images.size} кадров · $totalLabel", color = Muted, fontSize = 11.sp)
+                    Text("${images.size} кадров · $totalLabel", color = Muted, fontSize = 11.sp)
                 }
                 TextButton(onClick = { onTool("Экспорт") }) { Text("Экспорт", color = Violet, fontWeight = FontWeight.Bold) }
             }
@@ -291,11 +291,11 @@ private fun EditorScreen(
         }
     ) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).padding(bottom = 8.dp),
+            Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(bottom = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Box(
-                Modifier.fillMaxWidth().weight(1f).padding(horizontal = 14.dp)
+                Modifier.fillMaxWidth().heightIn(min = 210.dp, max = 300.dp).padding(horizontal = 14.dp)
                     .clip(RoundedCornerShape(18.dp)).background(Color(0xFF05060A)),
                 contentAlignment = Alignment.Center
             ) {
@@ -312,7 +312,7 @@ private fun EditorScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    "КАДР \${if (images.isEmpty()) 0 else selectedFrame + 1} / \${images.size}",
+                    "КАДР ${if (images.isEmpty()) 0 else selectedFrame + 1} / ${images.size}",
                     color = Muted, fontSize = 12.sp, fontWeight = FontWeight.Bold
                 )
                 Text("%.2f c · $totalLabel".format(duration), color = Muted, fontSize = 12.sp)
@@ -349,7 +349,7 @@ private fun EditorScreen(
                                 Box {
                                     ImageThumb(uri, Modifier.fillMaxWidth().height(76.dp))
                                     Text(
-                                        "\${index + 1}", color = Color.White, fontSize = 10.sp,
+                                        "${index + 1}", color = Color.White, fontSize = 10.sp,
                                         modifier = Modifier.align(Alignment.TopStart).padding(4.dp)
                                             .background(Ink.copy(alpha = 0.75f), CircleShape).padding(horizontal = 5.dp, vertical = 2.dp)
                                     )
@@ -360,7 +360,7 @@ private fun EditorScreen(
                     }
                     if (images.isNotEmpty()) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Выбран кадр \${selectedFrame + 1}", color = Color.White, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                            Text("Выбран кадр ${selectedFrame + 1}", color = Color.White, fontSize = 12.sp, modifier = Modifier.weight(1f))
                             IconButton(onClick = { onMove(-1) }, enabled = selectedFrame > 0) { Icon(Icons.Rounded.ArrowBack, "Переместить влево", tint = Muted) }
                             IconButton(onClick = { onMove(1) }, enabled = selectedFrame < images.lastIndex) { Icon(Icons.Rounded.ArrowForward, "Переместить вправо", tint = Muted) }
                             IconButton(onClick = onRemove) { Icon(Icons.Rounded.Delete, "Удалить кадр", tint = Color(0xFFFF8B9A)) }
