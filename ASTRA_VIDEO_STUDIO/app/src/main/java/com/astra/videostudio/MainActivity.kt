@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -147,7 +148,7 @@ private fun ImportScreen(
 ) {
     Scaffold(containerColor = Ink) { padding ->
         Column(
-            Modifier.fillMaxSize().padding(padding).padding(horizontal = 18.dp, vertical = 14.dp),
+            Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 18.dp, vertical = 14.dp),
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -414,12 +415,13 @@ private fun ImageThumb(uri: Uri, modifier: Modifier = Modifier, scale: ContentSc
         factory = { ctx ->
             ImageView(ctx).apply {
                 this.scaleType = if (scale == ContentScale.Fit) ImageView.ScaleType.FIT_CENTER else ImageView.ScaleType.CENTER_CROP
+                adjustViewBounds = true
                 setBackgroundColor(android.graphics.Color.rgb(24, 28, 43))
             }
         },
         update = { view ->
             view.scaleType = if (scale == ContentScale.Fit) ImageView.ScaleType.FIT_CENTER else ImageView.ScaleType.CENTER_CROP
-            runCatching { view.setImageURI(uri) }
+            runCatching { view.setImageURI(null); view.setImageURI(uri) }
         }
     )
 }
