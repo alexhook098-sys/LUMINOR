@@ -12,6 +12,8 @@
 Это исходный стартовый каркас, не готовый APK. Сейчас доступны интерфейс, импорт изображений, удаление кадров и расчёт длительности. Рендер MP4, drag-and-drop, FFmpeg, RIFE и Optical Flow ещё не подключены.
 
 ## Сборка
+Перед вызовом `sdkmanager` workflow устанавливает Android command-line tools через `android-actions/setup-android@v3`.
+
 GitHub Actions workflow `.github/workflows/astra-video-studio-build.yml` собирает debug APK на GitHub-hosted runner (JDK 17, Gradle 8.9, Android SDK 35) и публикует артефакт `astra-video-studio-debug-apk` на 14 дней. Сборка считается проверенной только после успешного завершения workflow.
 
 ## Целевое устройство
