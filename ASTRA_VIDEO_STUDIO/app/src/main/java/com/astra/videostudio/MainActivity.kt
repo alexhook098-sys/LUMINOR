@@ -92,7 +92,12 @@ private fun StudioScreen() {
     LaunchedEffect(isPlaying, images.size, frameDuration) {
         while (isPlaying && images.isNotEmpty()) {
             delay((frameDuration * 1000f).toLong().coerceAtLeast(50L))
-            selectedFrame = (selectedFrame + 1) % images.size
+            if (selectedFrame >= images.lastIndex) {
+                selectedFrame = images.lastIndex
+                isPlaying = false
+            } else {
+                selectedFrame += 1
+            }
         }
     }
 
@@ -119,7 +124,12 @@ private fun StudioScreen() {
             onBack = { isPlaying = false; inEditor = false },
             onAdd = { picker.launch(arrayOf("image/*")) },
             onSelectFrame = { selectedFrame = it; isPlaying = false },
-            onPlay = { isPlaying = !isPlaying },
+            onPlay = {
+                if (!isPlaying && images.isNotEmpty() && selectedFrame >= images.lastIndex) {
+                    selectedFrame = 0
+                }
+                isPlaying = !isPlaying
+            },
             onTool = { selectedTool = it },
             onRemove = {
                 images = images.toMutableList().also { if (selectedFrame in it.indices) it.removeAt(selectedFrame) }
@@ -325,6 +335,23 @@ private fun EditorScreen(
                     }
                     IconButton(onClick = { onSelectFrame((selectedFrame + 1).coerceAtMost(images.lastIndex)) }, enabled = selectedFrame < images.lastIndex) {
                         Icon(Icons.Rounded.SkipNext, null, tint = Color.White)
+                    }
+                }
+            }
+
+            if (images.isNotEmpty()) {
+                Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                    Slider(
+                        value = selectedFrame.toFloat(),
+                        onValueChange = { onSelectFrame(it.toInt().coerceIn(images.indices)) },
+                        valueRange = 0f..images.lastIndex.toFloat(),
+                        steps = (images.size - 2).coerceAtLeast(0),
+                        enabled = !isPlaying && images.size > 1
+                    )
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("%.2f сек".format(selectedFrame * duration), color = Muted, fontSize = 11.sp)
+                        Text("Перемотка", color = Muted, fontSize = 11.sp)
+                        Text(totalLabel, color = Muted, fontSize = 11.sp)
                     }
                 }
             }
