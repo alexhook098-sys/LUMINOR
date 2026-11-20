@@ -140,9 +140,10 @@ internal object Mp4Exporter {
                     if (info.flags and MediaCodec.BUFFER_FLAG_CODEC_CONFIG != 0) info.size = 0
                     if (info.size > 0) {
                         check(started) { "Мультиплексор не запущен" }
-                        buffer?.position(info.offset)
-                        buffer?.limit(info.offset + info.size)
-                        muxer.writeSampleData(track, buffer, info)
+                        val encoded = buffer ?: error("Пустой выходной буфер кодека")
+                        encoded.position(info.offset)
+                        encoded.limit(info.offset + info.size)
+                        muxer.writeSampleData(track, encoded, info)
                     }
                     if (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM != 0) done = true
                     codec.releaseOutputBuffer(index, false)
