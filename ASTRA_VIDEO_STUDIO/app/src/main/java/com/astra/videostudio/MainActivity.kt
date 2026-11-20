@@ -68,6 +68,7 @@ private fun StudioScreen() {
     var isPlaying by remember { mutableStateOf(false) }
     var selectedTool by remember { mutableStateOf("Монтаж") }
     var notice by remember { mutableStateOf("Добавь изображения — можно выбрать сразу много кадров.") }
+    var exporting by remember { mutableStateOf(false) }
 
     val picker = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenMultipleDocuments()
@@ -97,6 +98,20 @@ private fun StudioScreen() {
                 isPlaying = false
             } else {
                 selectedFrame += 1
+            }
+        }
+    }
+
+    LaunchedEffect(exporting) {
+        if (exporting) {
+            try {
+                val saved = Mp4Exporter.export(context, images, frameDuration)
+                notice = "MP4 сохранён в галерею: " + saved
+            } catch (error: Exception) {
+                notice = "Ошибка MP4: " + (error.message ?: "неизвестная ошибка")
+            } finally {
+                exporting = false
+                selectedTool = "Экспорт"
             }
         }
     }
@@ -131,6 +146,8 @@ private fun StudioScreen() {
                 isPlaying = !isPlaying
             },
             onTool = { selectedTool = it },
+            exporting = exporting,
+            onExport = { if (!exporting && images.isNotEmpty()) exporting = true },
             onRemove = {
                 images = images.toMutableList().also { if (selectedFrame in it.indices) it.removeAt(selectedFrame) }
                 selectedFrame = (selectedFrame - 1).coerceAtLeast(0)
@@ -261,7 +278,7 @@ private fun ImportScreen(
 @Composable
 private fun EditorScreen(
     images: List<Uri>, selectedFrame: Int, isPlaying: Boolean, duration: Float,
-    totalLabel: String, selectedTool: String, onBack: () -> Unit, onAdd: () -> Unit,
+    totalLabel: String, selectedTool: String, exporting: Boolean, onExport: () -> Unit, onBack: () -> Unit, onAdd: () -> Unit,
     onSelectFrame: (Int) -> Unit, onPlay: () -> Unit, onTool: (String) -> Unit,
     onRemove: () -> Unit, onMove: (Int) -> Unit
 ) {
@@ -278,7 +295,7 @@ private fun EditorScreen(
                     Text("МОНТАЖ", color = Color.White, fontWeight = FontWeight.Bold)
                     Text("${images.size} кадров · $totalLabel", color = Muted, fontSize = 11.sp)
                 }
-                TextButton(onClick = { onTool("Экспорт") }) { Text("Экспорт", color = Violet, fontWeight = FontWeight.Bold) }
+                TextButton(onClick = onExport, enabled = !exporting && images.isNotEmpty()) { Text(if (exporting) "Экспорт…" else "Экспорт", color = Violet, fontWeight = FontWeight.Bold) }
             }
         },
         bottomBar = {
@@ -396,7 +413,11 @@ private fun EditorScreen(
                 }
             }
 
-            ToolPanel(selectedTool)
+            if (selectedTool == "Экспорт") {
+                Card(Modifier.fillMaxWidth().padding(horizontal = 12.dp), colors = CardDefaults.cardColors(containerColor = Panel)) {
+                    Text(if (exporting) "Создаю MP4 · 720×1280 · 30 fps…" else notice, Modifier.padding(14.dp), color = Violet)
+                }
+            } else ToolPanel(selectedTool)
         }
     }
 }
